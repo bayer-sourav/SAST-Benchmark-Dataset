@@ -1,0 +1,84 @@
+{
+  "case_id": "BenchmarkTest00573",
+  "folder_root": ".",
+  "scan_root": ".",
+  "tool": [
+    "CodeQL"
+  ],
+  "file": "src/main/java/org/owasp/benchmark/testcode/BenchmarkTest00573.java",
+  "raw_output": {
+    "CodeQL": [
+      {
+        "ruleId": "java/error-message-exposure",
+        "ruleIndex": 51,
+        "rule": {
+          "id": "java/error-message-exposure",
+          "index": 51
+        },
+        "message": {
+          "text": "[Error information](1) can be exposed to an external user."
+        },
+        "locations": [
+          {
+            "physicalLocation": {
+              "artifactLocation": {
+                "uri": "src/main/java/org/owasp/benchmark/testcode/BenchmarkTest00573.java",
+                "uriBaseId": "%SRCROOT%",
+                "index": 2171
+              },
+              "region": {
+                "startLine": 75,
+                "startColumn": 30,
+                "endColumn": 91
+              }
+            }
+          }
+        ],
+        "partialFingerprints": {
+          "primaryLocationLineHash": "9131c920e470c149:1",
+          "primaryLocationStartColumnFingerprint": "9"
+        },
+        "relatedLocations": [
+          {
+            "id": 1,
+            "physicalLocation": {
+              "artifactLocation": {
+                "uri": "src/main/java/org/owasp/benchmark/testcode/BenchmarkTest00573.java",
+                "uriBaseId": "%SRCROOT%",
+                "index": 2171
+              },
+              "region": {
+                "startLine": 75,
+                "startColumn": 76,
+                "endColumn": 90
+              }
+            },
+            "message": {
+              "text": "Error information"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "dataset_bundle": true,
+  "gold_track": "BL",
+  "cwe_bucket": "error-message-exposure",
+  "split": "train",
+  "acceptable_labels": [
+    "TP",
+    "FP"
+  ],
+  "synthetic": false,
+  "synthetic_tier": null,
+  "validation_tier": "empirical_tp_fp_split",
+  "validation_labels": {
+    "qwen3_4b_bnb": "TP",
+    "qwen3_8b_bnb": "FP",
+    "qwen3_14b_bnb": "FP"
+  },
+  "validation_tp_rate": 0.3333,
+  "validation_disagreement": true,
+  "source_track": "tp",
+  "borderline_rationale": "Empirical: models disagree TP vs FP on tp track case."
+}

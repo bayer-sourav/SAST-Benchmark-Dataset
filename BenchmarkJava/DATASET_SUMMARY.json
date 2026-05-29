@@ -1,0 +1,47 @@
+{
+  "out_root": "/home/ec2-user/Projects/SAST-Benchmark-Dataset/BenchmarkJava",
+  "classes": {
+    "fp": {
+      "dataset": "benchmark_java_fp_v1",
+      "class": "fp",
+      "gold_track": "FP",
+      "n_cases": 900,
+      "splits": {
+        "train": 500,
+        "validation": 200,
+        "test": 200
+      }
+    },
+    "tp": {
+      "dataset": "benchmark_java_tp_v1",
+      "class": "tp",
+      "gold_track": "TP",
+      "n_cases": 900,
+      "splits": {
+        "train": 500,
+        "validation": 200,
+        "test": 200
+      }
+    },
+    "borderline": {
+      "dataset": "benchmark_java_borderline_v2",
+      "class": "borderline",
+      "gold_track": "BL",
+      "n_cases": 900,
+      "splits": {
+        "train": 500,
+        "validation": 200,
+        "test": 200
+      },
+      "selection": "empirical_636_plus_curated_synthetic_264",
+      "validation_tier": "mixed_empirical_tp_fp_and_design_curated",
+      "validation_profiles": [
+        "qwen3_4b_bnb",
+        "qwen3_8b_bnb",
+        "qwen3_14b_bnb"
+      ],
+      "note": "636 empirical TP+FP disagreement cases plus 264 design-curated deceptive synthetics.",
+      "synthetic_tier": "curated_v3_design"
+    }
+  }
+}

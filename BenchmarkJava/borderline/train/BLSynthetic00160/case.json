@@ -1,0 +1,65 @@
+{
+  "tool": [
+    "CodeQL"
+  ],
+  "raw_output": {
+    "CodeQL": [
+      {
+        "ruleId": "java/command-line-injection",
+        "ruleIndex": 0,
+        "rule": {
+          "id": "java/command-line-injection",
+          "index": 0
+        },
+        "message": {
+          "text": "Command depends on user-provided value."
+        },
+        "locations": [
+          {
+            "physicalLocation": {
+              "artifactLocation": {
+                "uri": "src/main/java/org/owasp/benchmark/testcode/blcurated/BlCurated00160.java",
+                "uriBaseId": "%SRCROOT%",
+                "index": 0
+              },
+              "region": {
+                "startLine": 36,
+                "startColumn": 9,
+                "endLine": 36,
+                "endColumn": 40
+              }
+            }
+          }
+        ],
+        "partialFingerprints": {
+          "primaryLocationLineHash": "synthetic-command-line-injection",
+          "primaryLocationStartColumnFingerprint": "0"
+        }
+      }
+    ]
+  },
+  "case_id": "BLSynthetic00160",
+  "gold_track": "BL",
+  "acceptable_labels": [
+    "TP",
+    "FP"
+  ],
+  "synthetic": true,
+  "synthetic_tier": "curated_v3_design",
+  "validation_tier": "design_curated_no_model_gate",
+  "cwe_bucket": "command-line-injection",
+  "template_id": "cmdi-partial-metachar-strip",
+  "borderline_rationale": "Partial shell metacharacter filtering before exec.",
+  "tp_argument": "Sanitizer does not cover all shell metacharacters or expansion forms.",
+  "fp_argument": "Common metacharacters are stripped before a fixed echo command.",
+  "codeql_origin": "synthetic_template_aligned",
+  "benchmark_real_vuln": null,
+  "validation_disagreement": null,
+  "validation_labels": null,
+  "validation_tp_rate": null,
+  "file": "src/main/java/org/owasp/benchmark/testcode/blcurated/BlCurated00160.java",
+  "folder_root": ".",
+  "scan_root": ".",
+  "dataset_bundle": true,
+  "split": "train"
+}

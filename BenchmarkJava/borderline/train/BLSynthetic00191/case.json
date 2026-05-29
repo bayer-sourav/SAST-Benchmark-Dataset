@@ -1,0 +1,65 @@
+{
+  "tool": [
+    "CodeQL"
+  ],
+  "raw_output": {
+    "CodeQL": [
+      {
+        "ruleId": "java/path-injection",
+        "ruleIndex": 0,
+        "rule": {
+          "id": "java/path-injection",
+          "index": 0
+        },
+        "message": {
+          "text": "User input may influence file path."
+        },
+        "locations": [
+          {
+            "physicalLocation": {
+              "artifactLocation": {
+                "uri": "src/main/java/org/owasp/benchmark/testcode/blcurated/BlCurated00191.java",
+                "uriBaseId": "%SRCROOT%",
+                "index": 0
+              },
+              "region": {
+                "startLine": 36,
+                "startColumn": 9,
+                "endLine": 36,
+                "endColumn": 40
+              }
+            }
+          }
+        ],
+        "partialFingerprints": {
+          "primaryLocationLineHash": "synthetic-path-injection",
+          "primaryLocationStartColumnFingerprint": "0"
+        }
+      }
+    ]
+  },
+  "case_id": "BLSynthetic00191",
+  "gold_track": "BL",
+  "acceptable_labels": [
+    "TP",
+    "FP"
+  ],
+  "synthetic": true,
+  "synthetic_tier": "curated_v3_design",
+  "validation_tier": "design_curated_no_model_gate",
+  "cwe_bucket": "path-injection",
+  "template_id": "path-partial-traversal-strip",
+  "borderline_rationale": "Incomplete path normalization on user input.",
+  "tp_argument": "Traversal may bypass naive stripping without canonicalization.",
+  "fp_argument": "Literal ../ removed; path confined under fixed base directory.",
+  "codeql_origin": "synthetic_template_aligned",
+  "benchmark_real_vuln": null,
+  "validation_disagreement": null,
+  "validation_labels": null,
+  "validation_tp_rate": null,
+  "file": "src/main/java/org/owasp/benchmark/testcode/blcurated/BlCurated00191.java",
+  "folder_root": ".",
+  "scan_root": ".",
+  "dataset_bundle": true,
+  "split": "train"
+}

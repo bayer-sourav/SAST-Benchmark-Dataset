@@ -1,0 +1,65 @@
+{
+  "tool": [
+    "CodeQL"
+  ],
+  "raw_output": {
+    "CodeQL": [
+      {
+        "ruleId": "java/insecure-randomness",
+        "ruleIndex": 0,
+        "rule": {
+          "id": "java/insecure-randomness",
+          "index": 0
+        },
+        "message": {
+          "text": "Random data depends on user-controlled value."
+        },
+        "locations": [
+          {
+            "physicalLocation": {
+              "artifactLocation": {
+                "uri": "src/main/java/org/owasp/benchmark/testcode/blcurated/BlCurated00252.java",
+                "uriBaseId": "%SRCROOT%",
+                "index": 0
+              },
+              "region": {
+                "startLine": 39,
+                "startColumn": 9,
+                "endLine": 39,
+                "endColumn": 40
+              }
+            }
+          }
+        ],
+        "partialFingerprints": {
+          "primaryLocationLineHash": "synthetic-insecure-randomness",
+          "primaryLocationStartColumnFingerprint": "0"
+        }
+      }
+    ]
+  },
+  "case_id": "BLSynthetic00252",
+  "gold_track": "BL",
+  "acceptable_labels": [
+    "TP",
+    "FP"
+  ],
+  "synthetic": true,
+  "synthetic_tier": "curated_v3_design",
+  "validation_tier": "design_curated_no_model_gate",
+  "cwe_bucket": "insecure-randomness",
+  "template_id": "random-secure-random-user-seed",
+  "borderline_rationale": "User input influences PRNG seeding.",
+  "tp_argument": "setSeed with user bytes weakens CSPRNG entropy.",
+  "fp_argument": "SecureRandom used; additional seed may not dominate output.",
+  "codeql_origin": "synthetic_template_aligned",
+  "benchmark_real_vuln": null,
+  "validation_disagreement": null,
+  "validation_labels": null,
+  "validation_tp_rate": null,
+  "file": "src/main/java/org/owasp/benchmark/testcode/blcurated/BlCurated00252.java",
+  "folder_root": ".",
+  "scan_root": ".",
+  "dataset_bundle": true,
+  "split": "train"
+}
