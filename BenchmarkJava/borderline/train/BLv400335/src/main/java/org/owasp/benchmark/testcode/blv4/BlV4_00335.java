@@ -1,0 +1,24 @@
+package org.owasp.benchmark.testcode.blv4;
+
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet(value = "/benchmark/blv4/semi/BlV4_00335")
+public class BlV4_00335 extends HttpServlet {
+    private static final long serialVersionUID = 1L;
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        String param = request.getParameter("data");
+        if (param == null) param = "";
+Object v = request.getSession().getAttribute("partnerCallback");
+String url = v != null ? v.toString() : param;
+response.sendRedirect(url);
+    }
+}

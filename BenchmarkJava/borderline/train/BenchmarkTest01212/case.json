@@ -419,22 +419,23 @@
   },
   "dataset_bundle": true,
   "gold_track": "BL",
-  "cwe_bucket": "sql-injection",
-  "split": "train",
   "acceptable_labels": [
-    "TP",
-    "FP"
+    "BL"
   ],
+  "borderline_version": "v4",
+  "borderline_category": "bypassable_mitigation",
+  "borderline_rationale": "Decode before validation enables encoding bypass.",
+  "bl_argument": "Decode before validation enables encoding bypass.",
+  "tp_argument": "Escalate if bypass/mitigation failure is realistic in production.",
+  "fp_argument": "Dismiss if deployment policy treats this mitigation as sufficient.",
+  "bl_context_questions": [
+    "What is the deployment context for this endpoint?"
+  ],
+  "dispute_resolution": "TP|FP disagreement → BL",
   "synthetic": false,
-  "synthetic_tier": null,
-  "validation_tier": "empirical_tp_fp_split",
-  "validation_labels": {
-    "qwen3_4b_bnb": "TP",
-    "qwen3_8b_bnb": "FP",
-    "qwen3_14b_bnb": "FP"
-  },
-  "validation_tp_rate": 0.3333,
-  "validation_disagreement": true,
+  "validation_tier": "empirical_v4_tagged",
+  "pattern_tag": "url_decode_before_check",
   "source_track": "fp",
-  "borderline_rationale": "Empirical: models disagree TP vs FP on fp track case."
+  "cwe_bucket": "sql-injection",
+  "split": "train"
 }

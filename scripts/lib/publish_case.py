@@ -8,6 +8,9 @@ from pathlib import Path
 from typing import Any
 
 
+from lib.java_source import resolve_java_source  # noqa: E402
+
+
 def rewrite_case_paths(case: dict[str, Any], *, rel_file: str) -> dict[str, Any]:
     """Normalize case JSON for a self-contained bundle."""
     out = dict(case)
@@ -33,9 +36,9 @@ def publish_real_case(
     if not rel_src:
         raise ValueError(f"No file path in case {case_path}")
 
-    src_java = bench_java_root / rel_src
-    if not src_java.is_file():
-        raise FileNotFoundError(src_java)
+    src_java = resolve_java_source(case, dataset_java_root=bench_java_root)
+    if src_java is None:
+        raise FileNotFoundError(f"No Java source for {case_id} ({rel_src})")
 
     bundle_dir = bundle_dir / case_id
     bundle_dir.mkdir(parents=True, exist_ok=True)

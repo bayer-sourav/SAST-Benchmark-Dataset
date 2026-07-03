@@ -8,7 +8,8 @@ Self-contained triage dataset for OWASP BenchmarkJava.
 BenchmarkJava/
 ├── fp/                 # 900 false-positive gold (real OWASP + CodeQL)
 ├── tp/                 # 900 true-positive gold (real OWASP + CodeQL)
-├── borderline/         # 900 ambiguous cases (636 empirical + 264 synthetic)
+├── borderline/         # 900 borderline v4 (500 empirical + 400 synthetic)
+├── borderline_pilot/   # 40 all-synthetic pilot (10 per category)
 └── DATASET_SUMMARY.json
 ```
 
@@ -22,9 +23,10 @@ Splits for every class: **500 train / 200 validation / 200 test**.
 |-------|------|---------|
 | `fp/` | FP | Dismiss alert (not a real vuln per OWASP) |
 | `tp/` | TP | Keep alert (real vuln per OWASP) |
-| `borderline/` | BL | **Both TP and FP are defensible** |
+| `borderline/` | BL | Reviewer needs deployment/context before TP vs FP |
+| `borderline_pilot/` | BL | Small synthetic-only pilot for prompt calibration |
 
-For borderline cases, `acceptable_labels` in `case.json` is **`["TP", "FP"]` only** (no BL label in the triage set).
+For **borderline v4**, `acceptable_labels` is **`["BL"]` only** — models must output BL on BL-gold (TP/FP are errors). See [docs/BORDERLINE_V4_SPEC.md](../docs/BORDERLINE_V4_SPEC.md).
 
 ## fp / tp
 
@@ -32,30 +34,33 @@ For borderline cases, `acceptable_labels` in `case.json` is **`["TP", "FP"]` onl
 - Source: OWASP BenchmarkJava + CodeQL SARIF-aligned alerts
 - Rebuild: `python3 scripts/build_java_dataset.py` (see [scripts/README.md](../scripts/README.md))
 
-## Borderline (published v2)
+## Borderline v4 (published)
 
-**900 cases** in two tiers:
+**Principle:** a competent reviewer needs **additional context** (deployment, reachability, mitigation bypass) before calling TP or FP.
 
-| Tier | Count | IDs | Validation |
-|------|-------|-----|------------|
-| Empirical | 636 | `BenchmarkTest*` | Qwen3 4B/8B/14B all produced both TP and FP on the same alert (Phase 1 Stage 2) |
-| Design-curated synthetic | 264 | `BLSynthetic*` | Deceptive partial-sanitization templates; no model gate |
+**900 cases** — 500 empirical OWASP (pattern-tagged from fp/tp corpora) + 400 curated synthetic:
 
-### Empirical cases
+| Category | Role |
+|----------|------|
+| `bypassable_mitigation` | Sanitization stops naive attacks but skilled bypass exists |
+| `dns_rebinding` | Resolve-then-fetch SSRF window (mostly synthetic) |
+| `deployment_trust` | Impact depends on WAF/VPC/admin-only routing |
+| `semi_trusted_input` | Session/config/partner data — not fully attacker-controlled |
 
-- Real OWASP + CodeQL bundles
-- `validation_tier: empirical_tp_fp_split`
-- Fields: `validation_labels`, `validation_tp_rate`, `validation_profiles`
+| Tier | Count | IDs |
+|------|-------|-----|
+| Empirical | 500 | `BenchmarkTest*` |
+| Synthetic | 400 | `BLv4*` |
 
-### Synthetic cases
+Case fields: `borderline_version: "v4"`, `borderline_category`, `bl_context_questions`, `acceptable_labels: ["BL"]`.
 
-- OWASP-style servlet sources; **no** label-leakage comments in Java
-- `synthetic_tier: curated_v3_design`, `validation_tier: design_curated_no_model_gate`
-- Fields: `template_id`, `tp_argument`, `fp_argument`, `borderline_rationale`
+### Pilot (`borderline_pilot/`)
+
+40 all-synthetic cases (10 per category), IDs `BLv4p*`. Used to calibrate prompts before full eval.
 
 ### Manifest
 
-`borderline/manifest.json` records composition (`empirical_636_plus_curated_synthetic_264`), CWE counts, and per-case rows.
+`borderline/manifest.json` records v4 composition, category counts, and per-case split rows.
 
 ## Case bundle schema
 
@@ -65,28 +70,19 @@ Each `case.json` contains:
 - `case_id`, `gold_track`, `cwe_bucket`, `split` (in manifest rows)
 - Class-specific metadata (see above)
 
-## Rebuild borderline
+## Rebuild borderline v4
 
-Prerequisites: SAST repo with `runs/phase1/stage2/` triage outputs for fp/tp corpora.
+Prerequisites: sibling `SAST/benchmark/corpora/{fp,tp}_codeql` and OWASP Java sources (monolithic `../BenchmarkJava` or per-case bundles under `fp/`/`tp/`).
 
 ```bash
-# 1) Empirical 636 (staging directory)
-python3 scripts/build_empirical_borderline.py \
-  -n 636 --train 353 --validation 141 --test 142 \
-  --out .work/empirical_borderline_636
-
-# 2) Synthetic 264 pool
-python3 scripts/build_bl_synthetic_264.py
-
-# 3) Merge and publish 900 in-place (re-splits to 500/200/200)
-python3 scripts/merge_borderline_900.py \
-  --empirical-dir .work/empirical_borderline_636 \
-  --synthetic-pool .work/bl_synthetic_264 \
-  --in-place
+python3 scripts/build_borderline_v4.py --dry-run
+python3 scripts/build_borderline_v4.py --out BenchmarkJava/borderline
 ```
 
-Full script reference: [scripts/README.md](../scripts/README.md).
+Pilot only:
 
-## Deprecated pipelines (removed)
+```bash
+python3 scripts/build_borderline_v4_pilot.py --out BenchmarkJava/borderline_pilot
+```
 
-Earlier repo versions included fully synthetic v1 borderline (900) and LLM-gated v2 pool validation. Those scripts are removed; the published tree matches **empirical + curated v3** only.
+Legacy v2/v3 rebuild scripts remain in `scripts/` for reference. Full reference: [scripts/README.md](../scripts/README.md).
