@@ -17,8 +17,14 @@ sys.path.insert(0, str(SCRIPTS_DIR))
 
 from lib.bl_categories import BL_V4_ACCEPTABLE_LABELS, BL_V4_VERSION  # noqa: E402
 from lib.publish_case import publish_real_case, publish_synthetic_case  # noqa: E402
-from lib.select_balanced import stratified_split  # noqa: E402
-from synthetic.curated_bl_v4 import FORBIDDEN, generate_pool, to_case_json  # noqa: E402
+from lib.select_balanced import stratified_split, stratified_split_equal_test_per_category  # noqa: E402
+from synthetic.curated_bl_v4 import (  # noqa: E402
+    FORBIDDEN,
+    FULL_SYNTHETIC_QUOTAS,
+    SYNTHETIC_QUOTAS,
+    generate_pool,
+    to_case_json,
+)
 
 SEED = 42
 TARGET = 900
@@ -111,10 +117,14 @@ def _publish_empirical(
     return manifest
 
 
-def _publish_synthetic(staging: Path, n: int) -> list[dict]:
+def _publish_synthetic(staging: Path, quotas: dict[str, int]) -> list[dict]:
     staging.mkdir(parents=True, exist_ok=True)
     manifest: list[dict] = []
-    for sc in generate_pool()[:n]:
+    pool = generate_pool(quotas=quotas)
+    expected = sum(quotas.values())
+    if len(pool) != expected:
+        raise SystemExit(f"Expected {expected} synthetic cases, generated {len(pool)}")
+    for sc in pool:
         for bad in FORBIDDEN:
             if bad.lower() in sc.java_source.lower():
                 raise ValueError(f"{sc.case_id} forbidden {bad!r}")
@@ -131,35 +141,40 @@ def _publish_synthetic(staging: Path, n: int) -> list[dict]:
 
 
 def _merge_and_split(
-    empirical: list[dict],
-    synthetic: list[dict],
+    cases: list[dict],
     out_root: Path,
+    *,
+    staging_dir: Path,
+    composition: dict[str, int],
+    selection: str,
+    stratify_by: str = "borderline_category",
+    equal_test_per_category: bool = False,
 ) -> None:
-    combined = empirical + synthetic
-    for row in combined:
-        cat = row.get("borderline_category", "unknown")
-        cwe = row.get("cwe_bucket") or "unknown"
-        row["cwe_bucket"] = f"{cat}|{cwe}"
+    for row in cases:
+        row["_stratify_bucket"] = row.get(stratify_by) or "unknown"
 
-    splits = stratified_split(
-        combined,
+    split_fn = stratified_split_equal_test_per_category if equal_test_per_category else stratified_split
+    splits = split_fn(
+        cases,
         train_n=SPLIT["train"],
         val_n=SPLIT["validation"],
         test_n=SPLIT["test"],
         seed=SEED,
+        **({"category_key": stratify_by} if equal_test_per_category else {"bucket_key": "_stratify_bucket"}),
     )
+
+    for row in cases:
+        cat = row.get("borderline_category", "unknown")
+        cwe = row.get("cwe_bucket") or "unknown"
+        row["cwe_bucket"] = f"{cat}|{cwe}"
+        row.pop("_stratify_bucket", None)
 
     if out_root.exists():
         shutil.rmtree(out_root)
     out_root.mkdir(parents=True)
 
-    staging_emp = REPO_ROOT / ".work" / "_bl_v4_emp_staging"
-    staging_syn = REPO_ROOT / ".work" / "_bl_v4_syn_staging"
     id_to_bundle: dict[str, Path] = {}
-    for bundle in staging_emp.iterdir():
-        if bundle.is_dir():
-            id_to_bundle[bundle.name] = bundle
-    for bundle in staging_syn.iterdir():
+    for bundle in staging_dir.iterdir():
         if bundle.is_dir():
             id_to_bundle[bundle.name] = bundle
 
@@ -199,9 +214,9 @@ def _merge_and_split(
         "seed": SEED,
         "n_cases": TARGET,
         "splits": SPLIT,
-        "composition": {"empirical": EMPIRICAL_TARGET, "synthetic": SYNTHETIC_TARGET},
+        "composition": composition,
         "borderline_category_counts": dict(sorted(cat_counts.items())),
-        "selection": "v4_principled_tagged_empirical_plus_curated_synthetic",
+        "selection": selection,
         "cases": manifest_rows,
     }
     (out_root / "manifest.json").write_text(json.dumps(manifest, indent=2), encoding="utf-8")
@@ -212,16 +227,49 @@ def main() -> None:
     ap.add_argument("--out", type=Path, default=REPO_ROOT / "BenchmarkJava" / "borderline")
     ap.add_argument("--sast-root", type=Path, default=REPO_ROOT.parent / "SAST")
     ap.add_argument("--bench-java", type=Path, default=REPO_ROOT / "BenchmarkJava")
+    ap.add_argument(
+        "--all-synthetic",
+        action="store_true",
+        help="900 curated synthetic cases only (no OWASP empirical)",
+    )
     ap.add_argument("--dry-run", action="store_true")
     args = ap.parse_args()
+
+    if args.all_synthetic:
+        quotas = FULL_SYNTHETIC_QUOTAS
+        if args.dry_run:
+            print(
+                json.dumps(
+                    {
+                        "mode": "all_synthetic",
+                        "n_cases": sum(quotas.values()),
+                        "quotas": quotas,
+                    },
+                    indent=2,
+                )
+            )
+            return
+
+        syn_staging = REPO_ROOT / ".work" / "_bl_v4_syn_staging"
+        if syn_staging.exists():
+            shutil.rmtree(syn_staging)
+        syn_manifest = _publish_synthetic(syn_staging, quotas)
+        _merge_and_split(
+            syn_manifest,
+            args.out.resolve(),
+            staging_dir=syn_staging,
+            composition={"empirical": 0, "synthetic": TARGET},
+            selection="v4_all_synthetic_curated_calibrated_v2",
+            equal_test_per_category=True,
+        )
+        print(f"Published all-synthetic borderline v4 -> {args.out}")
+        return
 
     report = REPO_ROOT / ".work" / "bl_v4_empirical_pool.json"
     pool = _run_tagger(report, args.sast_root.resolve(), args.bench_java.resolve())
     empirical_rows = _pick_empirical(pool, EMPIRICAL_TARGET)
 
     if args.dry_run:
-        from collections import Counter
-
         print(
             json.dumps(
                 {
@@ -243,8 +291,22 @@ def main() -> None:
         shutil.rmtree(syn_staging)
 
     emp_manifest = _publish_empirical(empirical_rows, args.bench_java.resolve(), emp_staging)
-    syn_manifest = _publish_synthetic(syn_staging, SYNTHETIC_TARGET)
-    _merge_and_split(emp_manifest, syn_manifest, args.out.resolve())
+    syn_manifest = _publish_synthetic(syn_staging, SYNTHETIC_QUOTAS)
+    combined_staging = REPO_ROOT / ".work" / "_bl_v4_combined_staging"
+    if combined_staging.exists():
+        shutil.rmtree(combined_staging)
+    combined_staging.mkdir(parents=True)
+    for staging in (emp_staging, syn_staging):
+        for bundle in staging.iterdir():
+            if bundle.is_dir():
+                shutil.copytree(bundle, combined_staging / bundle.name)
+    _merge_and_split(
+        emp_manifest + syn_manifest,
+        args.out.resolve(),
+        staging_dir=combined_staging,
+        composition={"empirical": EMPIRICAL_TARGET, "synthetic": SYNTHETIC_TARGET},
+        selection="v4_principled_tagged_empirical_plus_curated_synthetic",
+    )
     print(f"Published borderline v4 -> {args.out}")
 
 

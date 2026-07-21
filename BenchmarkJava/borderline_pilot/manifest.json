@@ -16,282 +16,282 @@
   "validation": "passed",
   "cases": [
     {
-      "case_id": "BLv4p00001",
-      "bundle": "BLv4p00001",
-      "source": "src/main/java/org/owasp/benchmark/testcode/blv4/BlV4_00001.java",
+      "case_id": "BenchmarkTest27001",
+      "bundle": "BenchmarkTest27001",
+      "source": "src/main/java/org/owasp/benchmark/testcode/BenchmarkTest27001.java",
       "borderline_category": "bypassable_mitigation",
-      "template_id": "xss-html-encode-in-script-context"
+      "template_id": "init-param-regex-output"
     },
     {
-      "case_id": "BLv4p00002",
-      "bundle": "BLv4p00002",
-      "source": "src/main/java/org/owasp/benchmark/testcode/blv4/BlV4_00002.java",
+      "case_id": "BenchmarkTest27002",
+      "bundle": "BenchmarkTest27002",
+      "source": "src/main/java/org/owasp/benchmark/testcode/BenchmarkTest27002.java",
       "borderline_category": "bypassable_mitigation",
-      "template_id": "allowlist-regex-host-userinfo"
+      "template_id": "allowlist-host-only-path-user"
     },
     {
-      "case_id": "BLv4p00003",
-      "bundle": "BLv4p00003",
-      "source": "src/main/java/org/owasp/benchmark/testcode/blv4/BlV4_00003.java",
+      "case_id": "BenchmarkTest27003",
+      "bundle": "BenchmarkTest27003",
+      "source": "src/main/java/org/owasp/benchmark/testcode/BenchmarkTest27003.java",
       "borderline_category": "bypassable_mitigation",
-      "template_id": "private-ip-block-incomplete"
+      "template_id": "path-normalize-single-decode"
     },
     {
-      "case_id": "BLv4p00004",
-      "bundle": "BLv4p00004",
-      "source": "src/main/java/org/owasp/benchmark/testcode/blv4/BlV4_00004.java",
+      "case_id": "BenchmarkTest27004",
+      "bundle": "BenchmarkTest27004",
+      "source": "src/main/java/org/owasp/benchmark/testcode/BenchmarkTest27004.java",
       "borderline_category": "bypassable_mitigation",
-      "template_id": "xss-blacklist-events"
+      "template_id": "sql-identifier-allowlist"
     },
     {
-      "case_id": "BLv4p00005",
-      "bundle": "BLv4p00005",
-      "source": "src/main/java/org/owasp/benchmark/testcode/blv4/BlV4_00005.java",
+      "case_id": "BenchmarkTest27005",
+      "bundle": "BenchmarkTest27005",
+      "source": "src/main/java/org/owasp/benchmark/testcode/BenchmarkTest27005.java",
       "borderline_category": "bypassable_mitigation",
-      "template_id": "url-decode-once-before-check"
+      "template_id": "path-read-init-param-pattern"
     },
     {
-      "case_id": "BLv4p00006",
-      "bundle": "BLv4p00006",
-      "source": "src/main/java/org/owasp/benchmark/testcode/blv4/BlV4_00006.java",
+      "case_id": "BenchmarkTest27006",
+      "bundle": "BenchmarkTest27006",
+      "source": "src/main/java/org/owasp/benchmark/testcode/BenchmarkTest27006.java",
       "borderline_category": "bypassable_mitigation",
-      "template_id": "scheme-prefix-only"
+      "template_id": "init-param-regex-output"
     },
     {
-      "case_id": "BLv4p00007",
-      "bundle": "BLv4p00007",
-      "source": "src/main/java/org/owasp/benchmark/testcode/blv4/BlV4_00007.java",
+      "case_id": "BenchmarkTest27007",
+      "bundle": "BenchmarkTest27007",
+      "source": "src/main/java/org/owasp/benchmark/testcode/BenchmarkTest27007.java",
       "borderline_category": "bypassable_mitigation",
-      "template_id": "sql-escape-apostrophe-only"
+      "template_id": "allowlist-host-only-path-user"
     },
     {
-      "case_id": "BLv4p00008",
-      "bundle": "BLv4p00008",
-      "source": "src/main/java/org/owasp/benchmark/testcode/blv4/BlV4_00008.java",
+      "case_id": "BenchmarkTest27008",
+      "bundle": "BenchmarkTest27008",
+      "source": "src/main/java/org/owasp/benchmark/testcode/BenchmarkTest27008.java",
       "borderline_category": "bypassable_mitigation",
-      "template_id": "ldap-filter-escape-partial"
+      "template_id": "path-normalize-single-decode"
     },
     {
-      "case_id": "BLv4p00009",
-      "bundle": "BLv4p00009",
-      "source": "src/main/java/org/owasp/benchmark/testcode/blv4/BlV4_00009.java",
+      "case_id": "BenchmarkTest27009",
+      "bundle": "BenchmarkTest27009",
+      "source": "src/main/java/org/owasp/benchmark/testcode/BenchmarkTest27009.java",
       "borderline_category": "bypassable_mitigation",
-      "template_id": "path-normalize-after-concat"
+      "template_id": "sql-identifier-allowlist"
     },
     {
-      "case_id": "BLv4p00010",
-      "bundle": "BLv4p00010",
-      "source": "src/main/java/org/owasp/benchmark/testcode/blv4/BlV4_00010.java",
+      "case_id": "BenchmarkTest27010",
+      "bundle": "BenchmarkTest27010",
+      "source": "src/main/java/org/owasp/benchmark/testcode/BenchmarkTest27010.java",
       "borderline_category": "bypassable_mitigation",
-      "template_id": "xss-strip-tags-keep-attributes"
+      "template_id": "path-read-init-param-pattern"
     },
     {
-      "case_id": "BLv4p00011",
-      "bundle": "BLv4p00011",
-      "source": "src/main/java/org/owasp/benchmark/testcode/blv4/BlV4_00011.java",
+      "case_id": "BenchmarkTest27011",
+      "bundle": "BenchmarkTest27011",
+      "source": "src/main/java/org/owasp/benchmark/testcode/BenchmarkTest27011.java",
       "borderline_category": "dns_rebinding",
-      "template_id": "dns-rebind-variant-0"
+      "template_id": "dns-rebind-gethostbyname-then-urlconn"
     },
     {
-      "case_id": "BLv4p00012",
-      "bundle": "BLv4p00012",
-      "source": "src/main/java/org/owasp/benchmark/testcode/blv4/BlV4_00012.java",
+      "case_id": "BenchmarkTest27012",
+      "bundle": "BenchmarkTest27012",
+      "source": "src/main/java/org/owasp/benchmark/testcode/BenchmarkTest27012.java",
       "borderline_category": "dns_rebinding",
-      "template_id": "dns-rebind-variant-1"
+      "template_id": "dns-rebind-sleep-between"
     },
     {
-      "case_id": "BLv4p00013",
-      "bundle": "BLv4p00013",
-      "source": "src/main/java/org/owasp/benchmark/testcode/blv4/BlV4_00013.java",
+      "case_id": "BenchmarkTest27013",
+      "bundle": "BenchmarkTest27013",
+      "source": "src/main/java/org/owasp/benchmark/testcode/BenchmarkTest27013.java",
       "borderline_category": "dns_rebinding",
-      "template_id": "dns-rebind-variant-2"
+      "template_id": "dns-rebind-cache-hint-then-fetch"
     },
     {
-      "case_id": "BLv4p00014",
-      "bundle": "BLv4p00014",
-      "source": "src/main/java/org/owasp/benchmark/testcode/blv4/BlV4_00014.java",
+      "case_id": "BenchmarkTest27014",
+      "bundle": "BenchmarkTest27014",
+      "source": "src/main/java/org/owasp/benchmark/testcode/BenchmarkTest27014.java",
       "borderline_category": "dns_rebinding",
-      "template_id": "dns-rebind-variant-3"
+      "template_id": "dns-rebind-fetch-after-resolve"
     },
     {
-      "case_id": "BLv4p00015",
-      "bundle": "BLv4p00015",
-      "source": "src/main/java/org/owasp/benchmark/testcode/blv4/BlV4_00015.java",
+      "case_id": "BenchmarkTest27015",
+      "bundle": "BenchmarkTest27015",
+      "source": "src/main/java/org/owasp/benchmark/testcode/BenchmarkTest27015.java",
       "borderline_category": "dns_rebinding",
-      "template_id": "dns-rebind-variant-4"
+      "template_id": "dns-rebind-gethostbyname-then-urlconn"
     },
     {
-      "case_id": "BLv4p00016",
-      "bundle": "BLv4p00016",
-      "source": "src/main/java/org/owasp/benchmark/testcode/blv4/BlV4_00016.java",
+      "case_id": "BenchmarkTest27016",
+      "bundle": "BenchmarkTest27016",
+      "source": "src/main/java/org/owasp/benchmark/testcode/BenchmarkTest27016.java",
       "borderline_category": "dns_rebinding",
-      "template_id": "dns-rebind-variant-5"
+      "template_id": "dns-rebind-sleep-between"
     },
     {
-      "case_id": "BLv4p00017",
-      "bundle": "BLv4p00017",
-      "source": "src/main/java/org/owasp/benchmark/testcode/blv4/BlV4_00017.java",
+      "case_id": "BenchmarkTest27017",
+      "bundle": "BenchmarkTest27017",
+      "source": "src/main/java/org/owasp/benchmark/testcode/BenchmarkTest27017.java",
       "borderline_category": "dns_rebinding",
-      "template_id": "dns-rebind-variant-6"
+      "template_id": "dns-rebind-cache-hint-then-fetch"
     },
     {
-      "case_id": "BLv4p00018",
-      "bundle": "BLv4p00018",
-      "source": "src/main/java/org/owasp/benchmark/testcode/blv4/BlV4_00018.java",
+      "case_id": "BenchmarkTest27018",
+      "bundle": "BenchmarkTest27018",
+      "source": "src/main/java/org/owasp/benchmark/testcode/BenchmarkTest27018.java",
       "borderline_category": "dns_rebinding",
-      "template_id": "dns-rebind-variant-7"
+      "template_id": "dns-rebind-fetch-after-resolve"
     },
     {
-      "case_id": "BLv4p00019",
-      "bundle": "BLv4p00019",
-      "source": "src/main/java/org/owasp/benchmark/testcode/blv4/BlV4_00019.java",
+      "case_id": "BenchmarkTest27019",
+      "bundle": "BenchmarkTest27019",
+      "source": "src/main/java/org/owasp/benchmark/testcode/BenchmarkTest27019.java",
       "borderline_category": "dns_rebinding",
-      "template_id": "dns-rebind-variant-8"
+      "template_id": "dns-rebind-gethostbyname-then-urlconn"
     },
     {
-      "case_id": "BLv4p00020",
-      "bundle": "BLv4p00020",
-      "source": "src/main/java/org/owasp/benchmark/testcode/blv4/BlV4_00020.java",
+      "case_id": "BenchmarkTest27020",
+      "bundle": "BenchmarkTest27020",
+      "source": "src/main/java/org/owasp/benchmark/testcode/BenchmarkTest27020.java",
       "borderline_category": "dns_rebinding",
-      "template_id": "dns-rebind-variant-9"
+      "template_id": "dns-rebind-sleep-between"
     },
     {
-      "case_id": "BLv4p00021",
-      "bundle": "BLv4p00021",
-      "source": "src/main/java/org/owasp/benchmark/testcode/blv4/BlV4_00021.java",
+      "case_id": "BenchmarkTest27021",
+      "bundle": "BenchmarkTest27021",
+      "source": "src/main/java/org/owasp/benchmark/testcode/BenchmarkTest27021.java",
       "borderline_category": "deployment_trust",
-      "template_id": "log-sink-sensitive"
+      "template_id": "html-comment-reflect"
     },
     {
-      "case_id": "BLv4p00022",
-      "bundle": "BLv4p00022",
-      "source": "src/main/java/org/owasp/benchmark/testcode/blv4/BlV4_00022.java",
+      "case_id": "BenchmarkTest27022",
+      "bundle": "BenchmarkTest27022",
+      "source": "src/main/java/org/owasp/benchmark/testcode/BenchmarkTest27022.java",
       "borderline_category": "deployment_trust",
-      "template_id": "sql-built-not-shown-execute"
+      "template_id": "audit-event-user-detail"
     },
     {
-      "case_id": "BLv4p00023",
-      "bundle": "BLv4p00023",
-      "source": "src/main/java/org/owasp/benchmark/testcode/blv4/BlV4_00023.java",
+      "case_id": "BenchmarkTest27023",
+      "bundle": "BenchmarkTest27023",
+      "source": "src/main/java/org/owasp/benchmark/testcode/BenchmarkTest27023.java",
       "borderline_category": "deployment_trust",
-      "template_id": "error-page-reflect"
+      "template_id": "sql-built-request-attribute"
     },
     {
-      "case_id": "BLv4p00024",
-      "bundle": "BLv4p00024",
-      "source": "src/main/java/org/owasp/benchmark/testcode/blv4/BlV4_00024.java",
+      "case_id": "BenchmarkTest27024",
+      "bundle": "BenchmarkTest27024",
+      "source": "src/main/java/org/owasp/benchmark/testcode/BenchmarkTest27024.java",
       "borderline_category": "deployment_trust",
-      "template_id": "internal-path-no-auth-in-file"
+      "template_id": "html-comment-reflect"
     },
     {
-      "case_id": "BLv4p00025",
-      "bundle": "BLv4p00025",
-      "source": "src/main/java/org/owasp/benchmark/testcode/blv4/BlV4_00025.java",
+      "case_id": "BenchmarkTest27025",
+      "bundle": "BenchmarkTest27025",
+      "source": "src/main/java/org/owasp/benchmark/testcode/BenchmarkTest27025.java",
       "borderline_category": "deployment_trust",
-      "template_id": "log-sink-sensitive"
+      "template_id": "audit-event-user-detail"
     },
     {
-      "case_id": "BLv4p00026",
-      "bundle": "BLv4p00026",
-      "source": "src/main/java/org/owasp/benchmark/testcode/blv4/BlV4_00026.java",
+      "case_id": "BenchmarkTest27026",
+      "bundle": "BenchmarkTest27026",
+      "source": "src/main/java/org/owasp/benchmark/testcode/BenchmarkTest27026.java",
       "borderline_category": "deployment_trust",
-      "template_id": "sql-built-not-shown-execute"
+      "template_id": "sql-built-request-attribute"
     },
     {
-      "case_id": "BLv4p00027",
-      "bundle": "BLv4p00027",
-      "source": "src/main/java/org/owasp/benchmark/testcode/blv4/BlV4_00027.java",
+      "case_id": "BenchmarkTest27027",
+      "bundle": "BenchmarkTest27027",
+      "source": "src/main/java/org/owasp/benchmark/testcode/BenchmarkTest27027.java",
       "borderline_category": "deployment_trust",
-      "template_id": "error-page-reflect"
+      "template_id": "html-comment-reflect"
     },
     {
-      "case_id": "BLv4p00028",
-      "bundle": "BLv4p00028",
-      "source": "src/main/java/org/owasp/benchmark/testcode/blv4/BlV4_00028.java",
+      "case_id": "BenchmarkTest27028",
+      "bundle": "BenchmarkTest27028",
+      "source": "src/main/java/org/owasp/benchmark/testcode/BenchmarkTest27028.java",
       "borderline_category": "deployment_trust",
-      "template_id": "internal-path-no-auth-in-file"
+      "template_id": "audit-event-user-detail"
     },
     {
-      "case_id": "BLv4p00029",
-      "bundle": "BLv4p00029",
-      "source": "src/main/java/org/owasp/benchmark/testcode/blv4/BlV4_00029.java",
+      "case_id": "BenchmarkTest27029",
+      "bundle": "BenchmarkTest27029",
+      "source": "src/main/java/org/owasp/benchmark/testcode/BenchmarkTest27029.java",
       "borderline_category": "deployment_trust",
-      "template_id": "log-sink-sensitive"
+      "template_id": "sql-built-request-attribute"
     },
     {
-      "case_id": "BLv4p00030",
-      "bundle": "BLv4p00030",
-      "source": "src/main/java/org/owasp/benchmark/testcode/blv4/BlV4_00030.java",
+      "case_id": "BenchmarkTest27030",
+      "bundle": "BenchmarkTest27030",
+      "source": "src/main/java/org/owasp/benchmark/testcode/BenchmarkTest27030.java",
       "borderline_category": "deployment_trust",
-      "template_id": "sql-built-not-shown-execute"
+      "template_id": "html-comment-reflect"
     },
     {
-      "case_id": "BLv4p00031",
-      "bundle": "BLv4p00031",
-      "source": "src/main/java/org/owasp/benchmark/testcode/blv4/BlV4_00031.java",
+      "case_id": "BenchmarkTest27031",
+      "bundle": "BenchmarkTest27031",
+      "source": "src/main/java/org/owasp/benchmark/testcode/BenchmarkTest27031.java",
       "borderline_category": "semi_trusted_input",
       "template_id": "session-partner-url"
     },
     {
-      "case_id": "BLv4p00032",
-      "bundle": "BLv4p00032",
-      "source": "src/main/java/org/owasp/benchmark/testcode/blv4/BlV4_00032.java",
+      "case_id": "BenchmarkTest27032",
+      "bundle": "BenchmarkTest27032",
+      "source": "src/main/java/org/owasp/benchmark/testcode/BenchmarkTest27032.java",
       "borderline_category": "semi_trusted_input",
       "template_id": "init-param-regex"
     },
     {
-      "case_id": "BLv4p00033",
-      "bundle": "BLv4p00033",
-      "source": "src/main/java/org/owasp/benchmark/testcode/blv4/BlV4_00033.java",
+      "case_id": "BenchmarkTest27033",
+      "bundle": "BenchmarkTest27033",
+      "source": "src/main/java/org/owasp/benchmark/testcode/BenchmarkTest27033.java",
       "borderline_category": "semi_trusted_input",
       "template_id": "cookie-prefixed-trust"
     },
     {
-      "case_id": "BLv4p00034",
-      "bundle": "BLv4p00034",
-      "source": "src/main/java/org/owasp/benchmark/testcode/blv4/BlV4_00034.java",
+      "case_id": "BenchmarkTest27034",
+      "bundle": "BenchmarkTest27034",
+      "source": "src/main/java/org/owasp/benchmark/testcode/BenchmarkTest27034.java",
       "borderline_category": "semi_trusted_input",
       "template_id": "oauth-state-parameter"
     },
     {
-      "case_id": "BLv4p00035",
-      "bundle": "BLv4p00035",
-      "source": "src/main/java/org/owasp/benchmark/testcode/blv4/BlV4_00035.java",
+      "case_id": "BenchmarkTest27035",
+      "bundle": "BenchmarkTest27035",
+      "source": "src/main/java/org/owasp/benchmark/testcode/BenchmarkTest27035.java",
       "borderline_category": "semi_trusted_input",
       "template_id": "session-partner-url"
     },
     {
-      "case_id": "BLv4p00036",
-      "bundle": "BLv4p00036",
-      "source": "src/main/java/org/owasp/benchmark/testcode/blv4/BlV4_00036.java",
+      "case_id": "BenchmarkTest27036",
+      "bundle": "BenchmarkTest27036",
+      "source": "src/main/java/org/owasp/benchmark/testcode/BenchmarkTest27036.java",
       "borderline_category": "semi_trusted_input",
       "template_id": "init-param-regex"
     },
     {
-      "case_id": "BLv4p00037",
-      "bundle": "BLv4p00037",
-      "source": "src/main/java/org/owasp/benchmark/testcode/blv4/BlV4_00037.java",
+      "case_id": "BenchmarkTest27037",
+      "bundle": "BenchmarkTest27037",
+      "source": "src/main/java/org/owasp/benchmark/testcode/BenchmarkTest27037.java",
       "borderline_category": "semi_trusted_input",
       "template_id": "cookie-prefixed-trust"
     },
     {
-      "case_id": "BLv4p00038",
-      "bundle": "BLv4p00038",
-      "source": "src/main/java/org/owasp/benchmark/testcode/blv4/BlV4_00038.java",
+      "case_id": "BenchmarkTest27038",
+      "bundle": "BenchmarkTest27038",
+      "source": "src/main/java/org/owasp/benchmark/testcode/BenchmarkTest27038.java",
       "borderline_category": "semi_trusted_input",
       "template_id": "oauth-state-parameter"
     },
     {
-      "case_id": "BLv4p00039",
-      "bundle": "BLv4p00039",
-      "source": "src/main/java/org/owasp/benchmark/testcode/blv4/BlV4_00039.java",
+      "case_id": "BenchmarkTest27039",
+      "bundle": "BenchmarkTest27039",
+      "source": "src/main/java/org/owasp/benchmark/testcode/BenchmarkTest27039.java",
       "borderline_category": "semi_trusted_input",
       "template_id": "session-partner-url"
     },
     {
-      "case_id": "BLv4p00040",
-      "bundle": "BLv4p00040",
-      "source": "src/main/java/org/owasp/benchmark/testcode/blv4/BlV4_00040.java",
+      "case_id": "BenchmarkTest27040",
+      "bundle": "BenchmarkTest27040",
+      "source": "src/main/java/org/owasp/benchmark/testcode/BenchmarkTest27040.java",
       "borderline_category": "semi_trusted_input",
       "template_id": "init-param-regex"
     }

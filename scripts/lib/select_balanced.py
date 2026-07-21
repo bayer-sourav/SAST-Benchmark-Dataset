@@ -107,3 +107,55 @@ def stratified_split(
                 break
 
     return splits
+
+
+def stratified_split_equal_test_per_category(
+    items: list[dict],
+    *,
+    train_n: int,
+    val_n: int,
+    test_n: int,
+    seed: int,
+    category_key: str = "borderline_category",
+) -> dict[str, list[dict]]:
+    """Split so each category contributes equally to test; train/val share the rest."""
+    assert train_n + val_n + test_n == len(items)
+    by_cat: dict[str, list[dict]] = defaultdict(list)
+    for it in items:
+        by_cat[it[category_key]].append(it)
+    n_cats = len(by_cat)
+    if test_n % n_cats != 0:
+        raise ValueError(f"test_n={test_n} not divisible by {n_cats} categories")
+    test_per_cat = test_n // n_cats
+    rest_n = train_n + val_n
+
+    rng = random.Random(seed)
+    splits: dict[str, list[dict]] = {"train": [], "validation": [], "test": []}
+    for cat in sorted(by_cat.keys()):
+        bucket = list(by_cat[cat])
+        rng.shuffle(bucket)
+        if len(bucket) < test_per_cat:
+            raise ValueError(f"category {cat!r} has {len(bucket)} cases, need {test_per_cat} for test")
+        splits["test"].extend(bucket[:test_per_cat])
+        rest = bucket[test_per_cat:]
+        cat_train = round(len(rest) * train_n / rest_n)
+        cat_val = len(rest) - cat_train
+        splits["train"].extend(rest[:cat_train])
+        splits["validation"].extend(rest[cat_train : cat_train + cat_val])
+
+    # Fix off-by-one drift vs global targets (rounding across categories)
+    for split_name, target in (("train", train_n), ("validation", val_n)):
+        delta = target - len(splits[split_name])
+        if delta > 0:
+            donor = "validation" if split_name == "train" else "train"
+            splits[split_name].extend(splits[donor][-delta:])
+            splits[donor] = splits[donor][:-delta]
+        elif delta < 0:
+            recipient = "validation" if split_name == "train" else "train"
+            splits[recipient].extend(splits[split_name][delta:])
+            splits[split_name] = splits[split_name][:delta]
+
+    assert len(splits["train"]) == train_n
+    assert len(splits["validation"]) == val_n
+    assert len(splits["test"]) == test_n
+    return splits

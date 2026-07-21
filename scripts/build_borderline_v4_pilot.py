@@ -46,7 +46,7 @@ def main() -> None:
     ap.add_argument("--out", type=Path, default=REPO_ROOT / "BenchmarkJava" / "borderline_pilot")
     ap.add_argument("--per-category", type=int, default=10)
     ap.add_argument("--exemplar-out", type=Path, default=None,
-                    help="Also write one DNS-rebind exemplar bundle for few-shot (BLv4p_exemplar)")
+                    help="Also write DNS-rebind few-shot exemplar bundle (BenchmarkTest26999)")
     args = ap.parse_args()
 
     out = args.out.resolve()
@@ -82,21 +82,34 @@ def main() -> None:
     if all_errors:
         raise SystemExit("Validation failed:\n" + "\n".join(all_errors))
 
-    # Few-shot exemplar (DNS rebind — not in pilot eval set)
-    exemplar_dir = out / "exemplar"
-    from synthetic.curated_bl_v4 import BlV4Case, _assemble, JAVA_PKG  # noqa: E402
+    from synthetic.curated_bl_v4 import (  # noqa: E402
+        FEWSHOT_EXEMPLAR_ID,
+        FEWSHOT_EXEMPLAR_INIT_PARAM_ID,
+        BlV4Case,
+        _assemble,
+        servlet_route,
+        _DNS_ADDRESS_HELPERS,
+    )
 
-    ex_rel = f"src/main/java/{JAVA_PKG.replace('.', '/')}/BlV4_exemplar.java"
+    exemplar_dir = out / "exemplar"
+    _fetch_dns = """
+private void fetchHttpByHostname(String host) throws java.io.IOException {
+    new java.net.URL("http://" + host + "/api").openStream();
+}
+"""
+    ex_cid = FEWSHOT_EXEMPLAR_ID
+    ex_rel = f"src/main/java/org/owasp/benchmark/testcode/{ex_cid}.java"
     ex_body = """
-        String target = param;
-        java.net.InetAddress addr = java.net.InetAddress.getByName(target);
-        if (addr.isLoopbackAddress()) return;
-        java.net.URL url = new java.net.URL("http://" + target + "/api");
-        url.openStream(); @sink
+        String host = param;
+        if (isNonPublicAddress(resolveHost(host))) return;
+        fetchHttpByHostname(host); @sink
     """
-    ex_java, ex_sink = _assemble("BlV4_exemplar", "blv4/exemplar", ex_body)
+    ex_route = servlet_route("ssrf", ex_cid, 0)
+    ex_java, ex_sink = _assemble(
+        ex_cid, ex_route, ex_body, class_helpers=_DNS_ADDRESS_HELPERS + _fetch_dns
+    )
     ex_sc = BlV4Case(
-        case_id="BLv4p_exemplar",
+        case_id=ex_cid,
         borderline_category="dns_rebinding",
         cwe_bucket="ssrf",
         java_source=ex_java,
@@ -113,10 +126,44 @@ def main() -> None:
     )
     publish_synthetic_case(
         bundle_dir=exemplar_dir,
-        case_id="BLv4p_exemplar",
+        case_id=ex_cid,
         java_source=ex_java,
         rel_file=ex_rel,
         case_json=to_case_json(ex_sc) | {"few_shot_exemplar": True},
+    )
+
+    ip_cid = FEWSHOT_EXEMPLAR_INIT_PARAM_ID
+    ip_rel = f"src/main/java/org/owasp/benchmark/testcode/{ip_cid}.java"
+    ip_body = """
+        String pat = getServletContext().getInitParameter("safe.pattern");
+        if (pat != null && param.matches(pat)) {
+            response.getWriter().println(param); @sink
+        }
+    """
+    ip_route = servlet_route("xss", ip_cid, 0)
+    ip_java, ip_sink = _assemble(ip_cid, ip_route, ip_body)
+    ip_sc = BlV4Case(
+        case_id=ip_cid,
+        borderline_category="semi_trusted_input",
+        cwe_bucket="xss",
+        java_source=ip_java,
+        rel_file=ip_rel,
+        sink_line=ip_sink,
+        rule_id="java/xss",
+        message="Init-param regex gate (few-shot BL exemplar).",
+        template_id="init-param-regex-exemplar",
+        borderline_rationale="Semi-trusted / deploy-time policy",
+        bl_argument="Regex from init param is admin-controlled; strength and change control not visible in snippet.",
+        tp_argument="Weak regex allows XSS.",
+        fp_argument="Strict regex reviewed in deployment manifest.",
+        bl_context_questions=["Who sets safe.pattern?", "Was regex red-teamed?"],
+    )
+    publish_synthetic_case(
+        bundle_dir=exemplar_dir,
+        case_id=ip_cid,
+        java_source=ip_java,
+        rel_file=ip_rel,
+        case_json=to_case_json(ip_sc) | {"few_shot_exemplar": True},
     )
 
     manifest = {

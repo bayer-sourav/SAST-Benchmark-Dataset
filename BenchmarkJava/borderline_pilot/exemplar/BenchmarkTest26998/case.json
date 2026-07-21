@@ -1,0 +1,68 @@
+{
+  "tool": [
+    "CodeQL"
+  ],
+  "raw_output": {
+    "CodeQL": [
+      {
+        "ruleId": "java/xss",
+        "ruleIndex": 0,
+        "rule": {
+          "id": "java/xss",
+          "index": 0
+        },
+        "message": {
+          "text": "Init-param regex gate (few-shot BL exemplar)."
+        },
+        "locations": [
+          {
+            "physicalLocation": {
+              "artifactLocation": {
+                "uri": "src/main/java/org/owasp/benchmark/testcode/BenchmarkTest26998.java",
+                "uriBaseId": "%SRCROOT%",
+                "index": 0
+              },
+              "region": {
+                "startLine": 22,
+                "startColumn": 9,
+                "endLine": 22,
+                "endColumn": 40
+              }
+            }
+          }
+        ],
+        "partialFingerprints": {
+          "primaryLocationLineHash": "synthetic-xss",
+          "primaryLocationStartColumnFingerprint": "0"
+        }
+      }
+    ]
+  },
+  "case_id": "BenchmarkTest26998",
+  "gold_track": "BL",
+  "acceptable_labels": [
+    "BL"
+  ],
+  "borderline_version": "v4",
+  "borderline_category": "semi_trusted_input",
+  "borderline_rationale": "Semi-trusted / deploy-time policy",
+  "bl_argument": "Regex from init param is admin-controlled; strength and change control not visible in snippet.",
+  "tp_argument": "Weak regex allows XSS.",
+  "fp_argument": "Strict regex reviewed in deployment manifest.",
+  "bl_context_questions": [
+    "Who sets safe.pattern?",
+    "Was regex red-teamed?"
+  ],
+  "dispute_resolution": "TP|FP disagreement → BL",
+  "synthetic": true,
+  "synthetic_tier": "curated_v4_calibrated_v3",
+  "validation_tier": "design_curated_v4_calibrated_v3",
+  "cwe_bucket": "xss",
+  "template_id": "init-param-regex-exemplar",
+  "codeql_origin": "synthetic_v4",
+  "few_shot_exemplar": true,
+  "file": "src/main/java/org/owasp/benchmark/testcode/BenchmarkTest26998.java",
+  "folder_root": ".",
+  "scan_root": ".",
+  "dataset_bundle": true
+}
